@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Animated Registration Form</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#6a11cb,#2575fc);
+    overflow:hidden;
+    position:relative;
+    padding:20px;
+}
+
+/* Floating circles */
+body::before{
+    content:"";
+    position:absolute;
+    width:300px;
+    height:300px;
+    background:rgba(255,255,255,.12);
+    border-radius:50%;
+    top:-100px;
+    left:-100px;
+}
+
+body::after{
+    content:"";
+    position:absolute;
+    width:250px;
+    height:250px;
+    background:rgba(255,255,255,.10);
+    border-radius:50%;
+    bottom:-80px;
+    right:-80px;
+}
+
+.container{
+    width:100%;
+    max-width:420px;
+    background:rgba(255,255,255,.15);
+    backdrop-filter:blur(15px);
+    border:1px solid rgba(255,255,255,.3);
+    border-radius:20px;
+    padding:30px;
+    color:white;
+    box-shadow:0 15px 35px rgba(0,0,0,.25);
+    animation:fadeIn .8s ease;
+    z-index:1;
+}
+
+@keyframes fadeIn{
+
+from{
+    opacity:0;
+    transform:translateY(30px);
+}
+
+to{
+    opacity:1;
+    transform:translateY(0);
+}
+
+}
+
+h2{
+    text-align:center;
+    margin-bottom:8px;
+}
+
+.subtitle{
+    text-align:center;
+    margin-bottom:20px;
+    opacity:.9;
+}
+
+.input-group{
+    margin-bottom:18px;
+}
+
+label{
+    display:block;
+    margin-bottom:6px;
+    font-weight:500;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    outline:none;
+    font-size:15px;
+    transition:.3s;
+}
+
+input:focus{
+    transform:scale(1.02);
+}
+
+.error{
+    color:#ffb3b3;
+    font-size:13px;
+    margin-top:5px;
+    display:block;
+}
+
+#strength{
+    margin-top:8px;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.show-password{
+    margin-top:10px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.show-password input{
+    width:auto;
+}
+
+.buttons{
+    display:flex;
+    gap:10px;
+    margin-top:20px;
+}
+
+button{
+    flex:1;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:600;
+    transition:.3s;
+}
+
+#submitBtn{
+    background:#00d084;
+    color:white;
+}
+
+#submitBtn:hover{
+    background:#00a56a;
+}
+
+#submitBtn:disabled{
+    background:gray;
+    cursor:not-allowed;
+}
+
+#resetBtn{
+    background:white;
+    color:#2575fc;
+}
+
+#resetBtn:hover{
+    background:#ececec;
+}
+
+.success{
+    text-align:center;
+    margin-top:18px;
+    font-weight:bold;
+    min-height:25px;
+}
+
+footer{
+    margin-top:25px;
+    border-top:1px solid rgba(255,255,255,.3);
+    padding-top:15px;
+    text-align:center;
+    font-size:13px;
+}
+
+footer strong{
+    color:#00ff99;
+}
+
+/* Responsive */
+
+@media(max-width:480px){
+
+.container{
+    padding:20px;
+}
+
+h2{
+    font-size:24px;
+}
+
+.subtitle{
+    font-size:14px;
+}
+
+.buttons{
+    flex-direction:column;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>👋 Welcome</h2>
+
+<p class="subtitle">
+Create your account below
+</p>
+
+<form id="registrationForm">
+
+<div class="input-group">
+<label>Full Name</label>
+<input type="text" id="name" placeholder="Enter your full name">
+<small class="error" id="nameError"></small>
+</div>
+
+<div class="input-group">
+<label>Email Address</label>
+<input type="email" id="email" placeholder="example@gmail.com">
+<small class="error" id="emailError"></small>
+</div>
+
+<div class="input-group">
+
+<label>Password</label>
+
+<input type="password" id="password" placeholder="Enter password">
+
+<small class="error" id="passwordError"></small>
+
+<p id="strength"></p>
+
+<div class="show-password">
+<input type="checkbox" id="showPassword">
+<label for="showPassword">Show Password</label>
+</div>
+
+</div>
+
+<div class="buttons">
+
+<button type="submit" id="submitBtn" disabled>
+Register
+</button>
+
+<button type="reset" id="resetBtn">
+Reset
+</button>
+
+</div>
+
+<p class="success" id="successMessage"></p>
+
+</form>
+
+<footer>
+© 2026 All Rights Reserved | <strong>Rupesh K R</strong>
+</footer>
+
+</div>
+
+<script>
+
+// Get Elements
+const nameInput = document.getElementById("name");
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+
+const nameError = document.getElementById("nameError");
+const emailError = document.getElementById("emailError");
+const passwordError = document.getElementById("passwordError");
+
+const submitBtn = document.getElementById("submitBtn");
+const successMessage = document.getElementById("successMessage");
+
+const showPassword = document.getElementById("showPassword");
+const strength = document.getElementById("strength");
+
+// Name Validation
+function validateName(){
+
+    if(nameInput.value.trim() === ""){
+        nameError.textContent = "Name is required";
+        nameInput.style.border = "2px solid red";
+        return false;
+    }
+
+    nameError.textContent = "";
+    nameInput.style.border = "2px solid limegreen";
+    return true;
+}
+
+
+// Email Validation
+function validateEmail(){
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if(emailInput.value.trim() === ""){
+        emailError.textContent = "Email is required";
+        emailInput.style.border = "2px solid red";
+        return false;
+    }
+
+    if(!emailPattern.test(emailInput.value)){
+        emailError.textContent = "Enter a valid email";
+        emailInput.style.border = "2px solid red";
+        return false;
+    }
+
+    emailError.textContent = "";
+    emailInput.style.border = "2px solid limegreen";
+    return true;
+}
+
+
+// Password Validation
+function validatePassword(){
+
+    let password = passwordInput.value;
+
+    if(password.length < 6){
+        passwordError.textContent = "Password must contain at least 6 characters";
+        passwordInput.style.border = "2px solid red";
+
+        strength.textContent = "🔴 Weak Password";
+        strength.style.color = "red";
+
+        return false;
+    }
+
+    else if(password.length < 10){
+
+        passwordError.textContent = "";
+        passwordInput.style.border = "2px solid orange";
+
+        strength.textContent = "🟡 Medium Password";
+        strength.style.color = "orange";
+
+        return true;
+    }
+
+    else{
+
+        passwordError.textContent = "";
+        passwordInput.style.border = "2px solid limegreen";
+
+        strength.textContent = "🟢 Strong Password";
+        strength.style.color = "lime";
+
+        return true;
+    }
+
+}
+
+
+// Enable Register Button
+function validateForm(){
+
+    let validName = validateName();
+    let validEmail = validateEmail();
+    let validPassword = validatePassword();
+
+    submitBtn.disabled = !(validName && validEmail && validPassword);
+
+}
+
+
+// Real-time Validation
+nameInput.addEventListener("input",validateForm);
+emailInput.addEventListener("input",validateForm);
+passwordInput.addEventListener("input",validateForm);
+
+
+// Show / Hide Password
+showPassword.addEventListener("change",function(){
+
+    if(this.checked){
+        passwordInput.type = "text";
+    }
+    else{
+        passwordInput.type = "password";
+    }
+
+});
+
+
+// Register Button
+document.getElementById("registrationForm").addEventListener("submit",function(e){
+
+    e.preventDefault();
+
+    successMessage.style.color = "white";
+    successMessage.innerHTML = "⏳ Registering...";
+
+    submitBtn.disabled = true;
+
+    setTimeout(function(){
+
+        successMessage.style.color = "#00ff99";
+        successMessage.innerHTML = "🎉 Registration Successful!";
+
+        document.getElementById("registrationForm").reset();
+
+        nameInput.style.border = "";
+        emailInput.style.border = "";
+        passwordInput.style.border = "";
+
+        nameError.textContent = "";
+        emailError.textContent = "";
+        passwordError.textContent = "";
+
+        strength.textContent = "";
+
+        submitBtn.disabled = true;
+
+    },2000);
+
+});
+
+
+// Reset Button
+document.getElementById("resetBtn").addEventListener("click",function(){
+
+    nameError.textContent = "";
+    emailError.textContent = "";
+    passwordError.textContent = "";
+
+    successMessage.textContent = "";
+    strength.textContent = "";
+
+    nameInput.style.border = "";
+    emailInput.style.border = "";
+    passwordInput.style.border = "";
+
+    submitBtn.disabled = true;
+
+});
+
+</script>
+
+</body>
+</html>
